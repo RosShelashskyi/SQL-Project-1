@@ -41,35 +41,51 @@ def print_menu():
 
 
 def option1():
+    #output instructions for the user
     print('-----------ADD A PUBLISHER-----------')
     print('To add a publisher, write the data in the following format: [name] [phoneNo] [city]')
     print('To cancel the entry, type NULL')
+    #take user input
     publisherData = input("Enter the publisher data here:")
+    #check if entry is NULL and return if needed
     if publisherData == "NULL":
         print("Entry canceled")
         return
+    #parse the input into words
     data = publisherData.split()
+    #pass the words into variables
     name, phone, city = data
+    #check if input is valid and can be used in the query. return otherwise
     if not isPublisherDataValid(name, phone, city):
         return
+    #call the function in book_dao
     result = book_dao.addAPublisher(name, phone, city)
+    #print the result
     print(result)
 
 
 def option2():
+    #output instructions for the user
     print('-----------ADD A BOOK-----------')
     print('To add a book, input the data in the following format:')
     print('[ISBN], [title], [year], [published_by], [previous_edition], [price]')
     print('To cancel the entry, type NULL')
+    #take user input
     bookData = input("Enter the book data here:")
+    #check if input is NULL and return if needed
     if bookData == 'NULL':
         print("Entry cancelled")
         return
+    #parse the input into words
     data = bookData.split(',')
+    #pass the words into variables
     ISBN, title, year, published_by, previous_edition, price = data
+    #check if input is valid and can be used in the query. return otherwise
     if isBookDataValid(ISBN, title, year, published_by, previous_edition, price):
         return
+    #call the function in book_dao
     result = book_dao.addABook(ISBN, title, year, published_by, previous_edition, price)
+    #print the result
     print(result)
 
 def option5():
@@ -112,7 +128,7 @@ if __name__=='__main__':
         else:
             print('Invalid option. Please enter a number between 1 and 6.')
 
-
+#function for checking the input when adding a publisher
 def isPublisherDataValid(name, phone, city):
     if name == None or phone == None or city == None:
         print('Entry incomplete')
@@ -133,6 +149,7 @@ def isPublisherDataValid(name, phone, city):
         return False
     return True
 
+#function for checking the input when adding a book
 def isBookDataValid(ISBN, title, year, published_by, previous_edition, price):
     if ISBN == None or title == None or year == None or published_by == None or previous_edition == None or price == None:
         print('Entry incomplete')
