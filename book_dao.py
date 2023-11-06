@@ -11,3 +11,8 @@ def findAll():
 
 # def findByTitle(title):
 #     to be added
+
+def addAPublisher(name, phone, city):
+    cursor = connection.cursor()
+    query = f"insert into Publisher(name, phone, city) values ('{name}', '{phone}', '{city}')"
+    cursor.execute(query)
