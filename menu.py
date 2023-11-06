@@ -41,12 +41,25 @@ def print_menu():
 
 
 def option1():
-    print('To add a publisher, write the data in the following format:')
-    print('[name] [phoneNo] [city]')
+    print('To add a publisher, write the data in the following format: [name] [phoneNo] [city]')
+    print('To cancel the entry, type NULL')
     publisherData = input("Enter the publisher data here:")
+    if data == "NULL":
+        print("Entry canceled")
+        return
     data = publisherData.split()
     name, phone, city = data
-    book_dao.addAPublisher(name, phone, city)
+    if len(name) > 25:
+        print("Name is too long. The Name can be up to 25 characters long")
+        return
+    if len(phone) != 10:
+        print("Phone numbers must be 10 characters long")
+        return
+    if len(city) > 20:
+        print("City name is too long. City names can be up to 20 characters long")
+        return
+    result = book_dao.addAPublisher(name, phone, city)
+    return result
 
 
 def option2():
