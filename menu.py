@@ -14,6 +14,50 @@ search_menu_options = {
     # To be added
 }
 
+#function for checking the input when adding a publisher
+def isPublisherDataValid(name, phone, city):
+    if len(name) > 25:
+        print("Name is too long. The Name can be up to 25 characters long")
+        return False
+    if len(phone) != 10:
+        print("Phone numbers must be 10 characters long")
+        return False
+    try:
+        int(phone)
+    except ValueError:
+        print("Phone numbers must consists of integers")
+        return False
+    if len(city) > 20:
+        print("City name is too long. City names can be up to 20 characters long")
+        return False
+    return True
+
+#function for checking the input when adding a book
+def isBookDataValid(ISBN, title, year, published_by, previous_edition, price):
+    if len(ISBN) != 10:
+        print("ISBN must be 10 characters long")
+        return False
+    if len(title) > 50:
+        print("Title can't be longer than 50 characters")
+        return False
+    try:
+        int(year)
+    except ValueError:
+        print('Year must be an integer')
+        return False
+    if len(published_by) > 25:
+        print("Published name can't be longer than 25 characters")
+        return False
+    if len(previous_edition) > 10:
+        print("Previous edition can't be longer than 10 characters")
+        return False
+    try:
+        float(price)
+    except ValueError:
+        print('Price must be a floating point value')
+        return False
+    return True
+
 def search_all_books():
     # Use a data access object (DAO) to 
     # abstract the retrieval of data from 
@@ -43,18 +87,22 @@ def print_menu():
 def option1():
     #output instructions for the user
     print('-----------ADD A PUBLISHER-----------')
-    print('To add a publisher, write the data in the following format: [name] [phoneNo] [city]')
+    print('To add a publisher, write the data in the following format: [name], [phoneNo], [city]')
     print('To cancel the entry, type NULL')
     #take user input
-    publisherData = input("Enter the publisher data here:")
+    publisherData = input("Enter the publisher data here: ")
     #check if entry is NULL and return if needed
-    if publisherData == "NULL":
+    if publisherData == None:
         print("Entry canceled")
         return
     #parse the input into words
-    data = publisherData.split()
+    data = publisherData.split(',')
     #pass the words into variables
-    name, phone, city = data
+    try:
+        name, phone, city = data
+    except ValueError:
+        print("Error: Entry is incomplete")
+        return
     #check if input is valid and can be used in the query. return otherwise
     if not isPublisherDataValid(name, phone, city):
         return
@@ -69,19 +117,24 @@ def option2():
     print('-----------ADD A BOOK-----------')
     print('To add a book, input the data in the following format:')
     print('[ISBN], [title], [year], [published_by], [previous_edition], [price]')
+    print("If the book doesn't have a previous edition, input null instead")
     print('To cancel the entry, type NULL')
     #take user input
-    bookData = input("Enter the book data here:")
+    bookData = input("Enter the book data here: ")
     #check if input is NULL and return if needed
-    if bookData == 'NULL':
+    if bookData == None:
         print("Entry cancelled")
         return
     #parse the input into words
-    data = bookData.split(',')
+    data = bookData.split(', ')
     #pass the words into variables
-    ISBN, title, year, published_by, previous_edition, price = data
+    try:
+        ISBN, title, year, published_by, previous_edition, price = data
+    except ValueError:
+        print("Error: the entry is incomplete")
+        return
     #check if input is valid and can be used in the query. return otherwise
-    if isBookDataValid(ISBN, title, year, published_by, previous_edition, price):
+    if not isBookDataValid(ISBN, title, year, published_by, previous_edition, price):
         return
     #call the function in book_dao
     result = book_dao.addABook(ISBN, title, year, published_by, previous_edition, price)
@@ -128,52 +181,3 @@ if __name__=='__main__':
         else:
             print('Invalid option. Please enter a number between 1 and 6.')
 
-#function for checking the input when adding a publisher
-def isPublisherDataValid(name, phone, city):
-    if name == None or phone == None or city == None:
-        print('Entry incomplete')
-        return False
-    if len(name) > 25:
-        print("Name is too long. The Name can be up to 25 characters long")
-        return False
-    if len(phone) != 10:
-        print("Phone numbers must be 10 characters long")
-        return False
-    try:
-        int(phone)
-    except ValueError:
-        print("Phone numbers must consists of integers")
-        return False
-    if len(city) > 20:
-        print("City name is too long. City names can be up to 20 characters long")
-        return False
-    return True
-
-#function for checking the input when adding a book
-def isBookDataValid(ISBN, title, year, published_by, previous_edition, price):
-    if ISBN == None or title == None or year == None or published_by == None or previous_edition == None or price == None:
-        print('Entry incomplete')
-        return False
-    if len(ISBN) != 10:
-        print("ISBN must be 10 characters long")
-        return False
-    if len(title) > 50:
-        print("Title can't be longer than 50 characters")
-        return False
-    try:
-        int(year)
-    except ValueError:
-        print('Year must be an integer')
-        return False
-    if len(published_by) > 25:
-        print("Published name can't be longer than 25 characters")
-        return False
-    if len(previous_edition) > 10:
-        print("Previous edition can't be longer than 10 characters")
-        return False
-    try:
-        float(price)
-    except ValueError:
-        print('Price must be a floating point value')
-        return False
-    return True

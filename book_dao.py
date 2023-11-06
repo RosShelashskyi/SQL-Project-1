@@ -34,6 +34,10 @@ def addAPublisher(name, phone, city):
 
 #function to add a book to the database
 def addABook(ISBN, title, year, published_by, previous_edition, price):
+    print(published_by)
+    print(previous_edition)
+    if previous_edition == 'null':
+        previous_edition = None
     #create a connection
     cursor = connection.cursor()
     #construct the query
