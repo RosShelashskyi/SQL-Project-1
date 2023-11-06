@@ -41,30 +41,36 @@ def print_menu():
 
 
 def option1():
+    print('-----------ADD A PUBLISHER-----------')
     print('To add a publisher, write the data in the following format: [name] [phoneNo] [city]')
     print('To cancel the entry, type NULL')
     publisherData = input("Enter the publisher data here:")
-    if data == "NULL":
+    if publisherData == "NULL":
         print("Entry canceled")
         return
     data = publisherData.split()
     name, phone, city = data
-    if len(name) > 25:
-        print("Name is too long. The Name can be up to 25 characters long")
-        return
-    if len(phone) != 10:
-        print("Phone numbers must be 10 characters long")
-        return
-    if len(city) > 20:
-        print("City name is too long. City names can be up to 20 characters long")
+    if not isPublisherDataValid(name, phone, city):
         return
     result = book_dao.addAPublisher(name, phone, city)
-    return result
+    print(result)
 
 
 def option2():
-    print('Handle option \'Option 2\'')
-
+    print('-----------ADD A BOOK-----------')
+    print('To add a book, input the data in the following format:')
+    print('[ISBN], [title], [year], [published_by], [previous_edition], [price]')
+    print('To cancel the entry, type NULL')
+    bookData = input("Enter the book data here:")
+    if bookData == 'NULL':
+        print("Entry cancelled")
+        return
+    data = bookData.split(',')
+    ISBN, title, year, published_by, previous_edition, price = data
+    if isBookDataValid(ISBN, title, year, published_by, previous_edition, price):
+        return
+    result = book_dao.addABook(ISBN, title, year, published_by, previous_edition, price)
+    print(result)
 
 def option5():
     # A sub-menu shall be printed
@@ -107,12 +113,50 @@ if __name__=='__main__':
             print('Invalid option. Please enter a number between 1 and 6.')
 
 
+def isPublisherDataValid(name, phone, city):
+    if name == None or phone == None or city == None:
+        print('Entry incomplete')
+        return False
+    if len(name) > 25:
+        print("Name is too long. The Name can be up to 25 characters long")
+        return False
+    if len(phone) != 10:
+        print("Phone numbers must be 10 characters long")
+        return False
+    try:
+        int(phone)
+    except ValueError:
+        print("Phone numbers must consists of integers")
+        return False
+    if len(city) > 20:
+        print("City name is too long. City names can be up to 20 characters long")
+        return False
+    return True
 
-
-
-
-
-
-
-
-
+def isBookDataValid(ISBN, title, year, published_by, previous_edition, price):
+    if ISBN == None or title == None or year == None or published_by == None or previous_edition == None or price == None:
+        print('Entry incomplete')
+        return False
+    if len(ISBN) != 10:
+        print("ISBN must be 10 characters long")
+        return False
+    if len(title) > 50:
+        print("Title can't be longer than 50 characters")
+        return False
+    try:
+        int(year)
+    except ValueError:
+        print('Year must be an integer')
+        return False
+    if len(published_by) > 25:
+        print("Published name can't be longer than 25 characters")
+        return False
+    if len(previous_edition) > 10:
+        print("Previous edition can't be longer than 10 characters")
+        return False
+    try:
+        float(price)
+    except ValueError:
+        print('Price must be a floating point value')
+        return False
+    return True
