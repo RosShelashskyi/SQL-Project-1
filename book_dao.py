@@ -14,7 +14,8 @@ def findAll():
 
 def addAPublisher(name, phone, city):
     cursor = connection.cursor()
-    query = "insert into Publisher(name, phone, city) values ('" + name + "', '" + phone + "', '" + city + "')"
-    cursor.execute(query)
+    query = "insert into Publisher(name, phone, city) values (%s, %s, %s)"
+    data = (name, phone, city)
+    cursor.execute(query, data)
     connection.commit()
     connection.close()
