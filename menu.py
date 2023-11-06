@@ -41,7 +41,12 @@ def print_menu():
 
 
 def option1():
-    print('Handle option \'Option 1\'')
+    print('To add a publisher, write the data in the following format:')
+    print('[name] [phoneNo] [city]')
+    publisherData = input("Enter the publisher data here:")
+    data = publisherData.split()
+    name, phone, city = data
+    book_dao.addAPublisher(name, phone, city)
 
 
 def option2():
