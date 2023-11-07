@@ -75,3 +75,11 @@ def editABook(ISBN, title, year, published_by, previous_edition, price):
     connection.commit()
     cursor.close()
     return "Book with ISBN: " + ISBN + " has been edited successfully"
+
+def deleteABook(ISBN):
+    cursor = connection.cursor()
+    query = "delete from Book where ISBN = '" + ISBN + "'"
+    cursor.execute(query)
+    connection.commit()
+    cursor.close()
+    return "Book with ISBN " + ISBN + " sucessfully deleted"

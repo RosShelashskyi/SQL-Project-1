@@ -5,7 +5,7 @@ menu_options = {
     1: 'Add a Publisher',
     2: 'Add a Book',
     3: 'Edit a Book',
-    # More options to be added
+    4: 'Delete a Book',
     5: 'Search Books',
     6: 'Exit',
 }
@@ -164,6 +164,16 @@ def option3():
     result = book_dao.editABook(ISBN, title, year, published_by, previous_edition, price)
     print(result)
 
+def option4():
+    print('-----------DELETE A BOOK-----------')
+    print('WARNING: AFTER DELETION THE ENTRY WILL BE PERMANENTLY LOST')
+    ISBN = input('Enter the ISBN of the book you want to delete: ')
+    
+    if len(ISBN) != 10: 
+        print('Error: ISBN must be 10 characters long')
+        return 
+    result = book_dao.deleteABook(ISBN)
+    print(result)
 
 def option5():
     # A sub-menu shall be printed
@@ -198,7 +208,8 @@ if __name__=='__main__':
             option2()
         elif option == 3:
             option3()
-        # More options to be added
+        elif option == 4:
+            option4()
         elif option == 5:
             option5()
         elif option == 6:
