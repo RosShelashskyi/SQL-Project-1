@@ -34,8 +34,6 @@ def addAPublisher(name, phone, city):
 
 #function to add a book to the database
 def addABook(ISBN, title, year, published_by, previous_edition, price):
-    print(published_by)
-    print(previous_edition)
     if previous_edition == 'null':
         previous_edition = None
     #create a connection
@@ -54,3 +52,26 @@ def addABook(ISBN, title, year, published_by, previous_edition, price):
     #close the connection and return the successful result
     cursor.close()
     return "Book <" + title + "> added successfully"
+
+def editABook(ISBN, title, year, published_by, previous_edition, price):
+    cursor = connection.cursor()
+    query = 'update Book'
+    if title != None:
+        query += " set title = '" + title + "',"
+    if year != None:
+        query += ' set year = ' + year + ','
+    if published_by != None:
+        query += " set published_by = '" + published_by + "',"
+    if previous_edition != None:
+        query += " set previous_edition = '" + previous_edition + "',"
+    if price != None:
+        query += 'set price = ' + price
+    if query[len(query) - 1] == ',':
+        newquery = query[0:len(query) - 1]
+    else:
+        newquery = query 
+    newquery += ' where ISBN = ' + ISBN
+    cursor.execute(newquery)
+    connection.commit()
+    cursor.close()
+    return "Book with ISBN: " + ISBN + " has been edited successfully"

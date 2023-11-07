@@ -34,28 +34,30 @@ def isPublisherDataValid(name, phone, city):
 
 #function for checking the input when adding a book
 def isBookDataValid(ISBN, title, year, published_by, previous_edition, price):
-    if len(ISBN) != 10:
+    if ISBN != None and len(ISBN) != 10:
         print("ISBN must be 10 characters long")
         return False
-    if len(title) > 50:
+    if title != None and len(title) > 50:
         print("Title can't be longer than 50 characters")
         return False
-    try:
-        int(year)
-    except ValueError:
-        print('Year must be an integer')
-        return False
-    if len(published_by) > 25:
+    if(year != None):
+        try:
+            int(year)
+        except ValueError:
+            print('Year must be an integer')
+            return False
+    if published_by != None and len(published_by) > 25:
         print("Published name can't be longer than 25 characters")
         return False
-    if len(previous_edition) > 10:
+    if previous_edition != None and len(previous_edition) > 10:
         print("Previous edition can't be longer than 10 characters")
         return False
-    try:
-        float(price)
-    except ValueError:
-        print('Price must be a floating point value')
-        return False
+    if price != None:
+        try:
+            float(price)
+        except ValueError:
+            print('Price must be a floating point value')
+            return False
     return True
 
 def search_all_books():
@@ -141,6 +143,28 @@ def option2():
     #print the result
     print(result)
 
+def option3():
+    print('-----------EDIT A BOOK-----------')
+    ISBN = input('Enter the ISBN of the book you want to edit: ')
+    print('Input new values for each field. Press enter if you want to leave the field unchanged')
+    title = input('Input new title or press Enter: ')
+    year = input('Input new year or press Enter: ')
+    published_by = input('Input new published or press Enter: ')
+    previous_edition = input('Input new previous edition or press Enter: ')
+    price = input('Input new price or press Enter: ')
+
+    if len(title) < 1: title = None
+    if len(year) < 1: year = None 
+    if len(published_by) < 1: published_by = None 
+    if len(previous_edition) < 1: previous_edition = None
+    if len(price) < 1: price = None 
+
+    if not isBookDataValid(ISBN, title, year, published_by, previous_edition, price):
+        return
+    result = book_dao.editABook(ISBN, title, year, published_by, previous_edition, price)
+    print(result)
+
+
 def option5():
     # A sub-menu shall be printed
     # and prompt user selection
@@ -172,6 +196,8 @@ if __name__=='__main__':
            option1()
         elif option == 2:
             option2()
+        elif option == 3:
+            option3()
         # More options to be added
         elif option == 5:
             option5()
