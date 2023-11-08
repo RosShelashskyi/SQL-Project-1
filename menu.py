@@ -136,6 +136,16 @@ def search_by_year():
         print(item[0], item[1])
     print("End of search")
 
+def search_by_title_and_publisher():
+    print()
+    title = input("Enter the title of books you want to find: ")
+    published_by = input("Enter the publisher of books you want to find: ")
+    print("The following are the ISBNs of books with title '" + title + "' published by '" + published_by + "'")
+    results = book_dao.findByTitleAndPublisher(title, published_by)
+    for item in results:
+        print(item[0])
+    print("End of search")
+
 def print_menu():
     print()
     print("Please make a selection")
@@ -272,7 +282,9 @@ def option5():
     elif option == 6:
         print("Search Option 6: Search by Year was chosen")
         search_by_year()
-    #elif option == 7:
+    elif option == 7:
+        print("Search Option 7: Search by Title and Publisher")
+        search_by_title_and_publisher()
     else:
         print('Invalid option. Please enter a number betwee 1 and 7')
 
