@@ -88,6 +88,15 @@ def search_by_title():
         print(item[0], item[1])
     print('End of search')
 
+def search_by_ISBN():
+    print()
+    ISBN = input('Enter the ISBN of books you want to find: ')
+    print("The following are the titles of all the Books with ISBN '" + ISBN + "'")
+    results = book_dao.findByISBN(ISBN)
+    for item in results:
+        print(item[1])
+    print('End of search')
+
 def print_menu():
     print()
     print("Please make a selection")
@@ -213,6 +222,13 @@ def option5():
     elif option == 2:
         print("Search Option 2: search by title was chosen")
         search_by_title()
+    elif option == 3:
+        print("Search Option 3: search by ISBN was chosen")
+        search_by_ISBN()
+    #elif option == 4:
+    #elif option == 5:
+    #elif option == 6:
+    #elif option == 7:
     else:
         print('Invalid option. Please enter a number betwee 1 and 7')
 
