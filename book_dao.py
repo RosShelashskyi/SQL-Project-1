@@ -26,6 +26,14 @@ def findByISBN(ISBN):
     connection.close()
     return results
 
+def findByPublisher(published_by):
+    cursor = connection.cursor()
+    query = "select * from Book where published_by = '" + published_by + "'"
+    cursor.execute(query)
+    results = cursor.fetchall()
+    connection.close()
+    return results
+
 #function to add a publisher to the database
 def addAPublisher(name, phone, city):
     #create a connection

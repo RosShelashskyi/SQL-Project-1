@@ -97,6 +97,15 @@ def search_by_ISBN():
         print(item[1])
     print('End of search')
 
+def search_by_publisher():
+    print()
+    published_by = input("Enter the published of books you want to find: ")
+    print("The following are the ISBNs and titles of all the book published by '" + published_by + "'")
+    results = book_dao.findByPublisher(published_by)
+    for item in results:
+        print(item[0], item[1])
+    print('End of search')
+
 def print_menu():
     print()
     print("Please make a selection")
@@ -220,12 +229,14 @@ def option5():
         print("Search Option 1: all books were chosen.")
         search_all_books()
     elif option == 2:
-        print("Search Option 2: search by title was chosen")
+        print("Search Option 2: Search by Title was chosen")
         search_by_title()
     elif option == 3:
-        print("Search Option 3: search by ISBN was chosen")
+        print("Search Option 3: Search by ISBN was chosen")
         search_by_ISBN()
-    #elif option == 4:
+    elif option == 4:
+        print("Search Option 4: Search by Publisher was chosen")
+        search_by_publisher()
     #elif option == 5:
     #elif option == 6:
     #elif option == 7:
