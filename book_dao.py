@@ -10,8 +10,13 @@ def findAll():
     return results
     
 
-# def findByTitle(title):
-#     to be added
+def findByTitle(title):
+    cursor = connection.cursor()
+    query = "select * from Book where title = '" + title + "'"
+    cursor.execute(query)
+    results = cursor.fetchall()
+    connection.close()
+    return results
 
 #function to add a publisher to the database
 def addAPublisher(name, phone, city):
