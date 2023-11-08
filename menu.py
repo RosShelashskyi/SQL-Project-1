@@ -106,6 +106,22 @@ def search_by_publisher():
         print(item[0], item[1])
     print('End of search')
 
+def search_by_price():
+    print()
+    min = input("Enter the min price: ")
+    max = input("Enter the max price: ")
+    try:
+        float(min)
+        float(max)
+    except ValueError:
+        print("Min and max must be floating point values")
+        return
+    print("The following are the ISBNs title, and prices of books priced between " + min + " and " + max)
+    results = book_dao.findByPrice(min, max)
+    for item in results:
+        print(item[0], item[1], item[5])
+    print('End of search')
+
 def print_menu():
     print()
     print("Please make a selection")
@@ -122,6 +138,8 @@ def print_search_menu():
         print(str(key) + '.', search_menu_options[key], end = ' ')
     print()
     print()
+
+
 
 
 def option1():
@@ -237,7 +255,9 @@ def option5():
     elif option == 4:
         print("Search Option 4: Search by Publisher was chosen")
         search_by_publisher()
-    #elif option == 5:
+    elif option == 5:
+        print("Search Option 5: Search by Price Range was chosen")
+        search_by_price()
     #elif option == 6:
     #elif option == 7:
     else:

@@ -34,6 +34,14 @@ def findByPublisher(published_by):
     connection.close()
     return results
 
+def findByPrice(min, max):
+    cursor = connection.cursor()
+    query = "select * from Book where price between " + min + " and " + max
+    cursor.execute(query)
+    results = cursor.fetchall()
+    connection.close()
+    return results
+
 #function to add a publisher to the database
 def addAPublisher(name, phone, city):
     #create a connection
