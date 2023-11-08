@@ -66,6 +66,9 @@ def isBookDataValid(ISBN, title, year, published_by, previous_edition, price):
             return False
     return True
 
+#all the search functions are implemented here
+#they take user input, call find functions and print results
+
 def search_all_books():
     # Use a data access object (DAO) to 
     # abstract the retrieval of data from 
@@ -146,6 +149,7 @@ def search_by_title_and_publisher():
         print(item[0])
     print("End of search")
 
+#prints the menu
 def print_menu():
     print()
     print("Please make a selection")
@@ -155,6 +159,7 @@ def print_menu():
     print("The end of top-level options")
     print()
 
+#prints search menu
 def print_search_menu():
     print()
     print("Select a search option")
@@ -175,7 +180,7 @@ def option1():
         print("Entry canceled")
         return
     #parse the input into words
-    data = publisherData.split(',')
+    data = publisherData.split(', ')
     #pass the words into variables
     try:
         name, phone, city = data
@@ -221,6 +226,7 @@ def option2():
     print(result)
 
 def option3():
+    #print instructions and take input
     print('-----------EDIT A BOOK-----------')
     ISBN = input('Enter the ISBN of the book you want to edit: ')
     print('Input new values for each field. Press enter if you want to leave the field unchanged')
@@ -230,31 +236,44 @@ def option3():
     previous_edition = input('Input new previous edition or press Enter: ')
     price = input('Input new price or press Enter: ')
 
+    #set vars to None if they are null
     if len(title) < 1: title = None
     if len(year) < 1: year = None 
     if len(published_by) < 1: published_by = None 
     if len(previous_edition) < 1: previous_edition = None
     if len(price) < 1: price = None 
 
+    #return if all vars are None
+    if title == None and year == None and published_by == None and previous_edition == None and price == None:
+        print("No data inserted. Cancelling the operation")
+        return
+
+    #check for valid format
     if not isBookDataValid(ISBN, title, year, published_by, previous_edition, price):
         return
+    #call the edit function and print the result
     result = book_dao.editABook(ISBN, title, year, published_by, previous_edition, price)
     print(result)
 
 def option4():
+    #print instructions and take input
     print('-----------DELETE A BOOK-----------')
     print('WARNING: AFTER DELETION THE ENTRY WILL BE PERMANENTLY LOST')
     ISBN = input('Enter the ISBN of the book you want to delete: ')
     
+    #make sure ISBN is 10 chars long
     if len(ISBN) != 10: 
         print('Error: ISBN must be 10 characters long')
         return 
+    #call delete function and print the result
     result = book_dao.deleteABook(ISBN)
     print(result)
 
 def option5():
+    #print the menu
     print_search_menu()
 
+    #take input
     option = ''
     try:
         option = int(input('Enter your choice: '))
@@ -264,6 +283,7 @@ def option5():
     except:
         print('Wrong input. Please enter a number')
     
+    #handle user selection
     if option == 1:
         print("Search Option 1: all books were chosen.")
         search_all_books()

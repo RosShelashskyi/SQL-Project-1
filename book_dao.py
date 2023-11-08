@@ -1,6 +1,7 @@
 from mysql_connector import connection
 import mysql.connector
 
+#returns all books in the database
 def findAll():
     cursor = connection.cursor()
     query = "select * from bookmanager.Book"
@@ -9,7 +10,7 @@ def findAll():
     connection.close()
     return results
     
-
+#returns all books with title <title>
 def findByTitle(title):
     cursor = connection.cursor()
     query = "select * from Book where title = '" + title + "'"
@@ -18,6 +19,7 @@ def findByTitle(title):
     connection.close()
     return results
 
+#returns all books with ISBN <ISBN>
 def findByISBN(ISBN):
     cursor = connection.cursor()
     query = "select * from Book where ISBN = '" + ISBN + "'"
@@ -26,6 +28,7 @@ def findByISBN(ISBN):
     connection.close()
     return results
 
+#returns all books with publisher <published_by>
 def findByPublisher(published_by):
     cursor = connection.cursor()
     query = "select * from Book where published_by = '" + published_by + "'"
@@ -34,6 +37,7 @@ def findByPublisher(published_by):
     connection.close()
     return results
 
+#returns all books with price between <min> and <max>
 def findByPrice(min, max):
     cursor = connection.cursor()
     query = "select * from Book where price between " + min + " and " + max
@@ -42,6 +46,7 @@ def findByPrice(min, max):
     connection.close()
     return results
 
+#returns all books with year <year>
 def findByYear(year):
     cursor = connection.cursor()
     query = "select * from Book where year = " + year
@@ -50,6 +55,7 @@ def findByYear(year):
     connection.close()
     return results
 
+#returns all books with title <title> and publisher <published_by>
 def findByTitleAndPublisher(title, published_by):
     cursor = connection.cursor()
     query = "select * from Book where title = '" + title + "' and published_by = '" + published_by + "'"
@@ -79,7 +85,7 @@ def addAPublisher(name, phone, city):
 
 #function to add a book to the database
 def addABook(ISBN, title, year, published_by, previous_edition, price):
-    if previous_edition == 'null':
+    if previous_edition == 'null' or len(previous_edition) < 1:
         previous_edition = None
     #create a connection
     cursor = connection.cursor()
@@ -93,14 +99,16 @@ def addABook(ISBN, title, year, published_by, previous_edition, price):
     except mysql.connector.errors.IntegrityError:
         #close the connection if the entry is duplicate and return the error message
         cursor.close()
-        return "Duplicate entry: book <" + title + "> already exists"
+        return "Duplicate entry: book <" + title + "> already exists or the input was incorrect"
     #close the connection and return the successful result
     cursor.close()
     return "Book <" + title + "> added successfully"
 
+#function to edit a book
 def editABook(ISBN, title, year, published_by, previous_edition, price):
     cursor = connection.cursor()
     query = 'update Book'
+    #insert set statement into the query if the variables aren't null
     if title != None:
         query += " set title = '" + title + "',"
     if year != None:
@@ -111,16 +119,20 @@ def editABook(ISBN, title, year, published_by, previous_edition, price):
         query += " set previous_edition = '" + previous_edition + "',"
     if price != None:
         query += 'set price = ' + price
+    #remove the ',' from the last statement if there is ','
     if query[len(query) - 1] == ',':
         newquery = query[0:len(query) - 1]
     else:
         newquery = query 
-    newquery += ' where ISBN = ' + ISBN
+    #execute the query
+    newquery += " where ISBN = '" + ISBN + "'"
     cursor.execute(newquery)
     connection.commit()
+    #close conection and return
     cursor.close()
     return "Book with ISBN: " + ISBN + " has been edited successfully"
 
+#deletes a book with ISBN <ISBN>
 def deleteABook(ISBN):
     cursor = connection.cursor()
     query = "delete from Book where ISBN = '" + ISBN + "'"
