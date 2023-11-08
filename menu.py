@@ -11,7 +11,13 @@ menu_options = {
 }
 
 search_menu_options = {
-    # To be added
+    1: 'Search all books',
+    2: 'Search by title',
+    3: 'Search by ISBN',
+    4: 'Searched by publisher',
+    5: 'Search by price range',
+    6: 'Search by year',
+    7: 'Search by title and publisher'
 }
 
 #function for checking the input when adding a publisher
@@ -73,8 +79,14 @@ def search_all_books():
     print("The end of books.")
 
 
-# def search_by_title():
-#   To be added
+def search_by_title():
+    print()
+    title = input('Enter the title of books you want to find: ')
+    print("The following are the ISBNs and titles of all books with title '" + title + "'")
+    results = book_dao.findByTitle(title)
+    for item in results:
+        print(item[0], item[1])
+    print('End of search')
 
 def print_menu():
     print()
@@ -83,6 +95,14 @@ def print_menu():
         print (str(key)+'.', menu_options[key], end = "  ")
     print()
     print("The end of top-level options")
+    print()
+
+def print_search_menu():
+    print()
+    print("Select a search option")
+    for key in search_menu_options.keys():
+        print(str(key) + '.', search_menu_options[key], end = ' ')
+    print()
     print()
 
 
@@ -176,16 +196,28 @@ def option4():
     print(result)
 
 def option5():
-    # A sub-menu shall be printed
-    # and prompt user selection
+    print_search_menu()
 
-    # print_search_menu
-
-    # user selection of options and actions
+    option = ''
+    try:
+        option = int(input('Enter your choice: '))
+    except KeyboardInterrupt:
+        print('Interrupted')
+        return
+    except:
+        print('Wrong input. Please enter a number')
+    
+    if option == 1:
+        print("Search Option 1: all books were chosen.")
+        search_all_books()
+    elif option == 2:
+        print("Search Option 2: search by title was chosen")
+        search_by_title()
+    else:
+        print('Invalid option. Please enter a number betwee 1 and 7')
 
     # Assume the option: search all books was chosen
-    print("Search Option 1: all books were chosen.")
-    search_all_books()
+    
 
 
 
