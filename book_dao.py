@@ -42,6 +42,14 @@ def findByPrice(min, max):
     connection.close()
     return results
 
+def findByYear(year):
+    cursor = connection.cursor()
+    query = "select * from Book where year = " + year
+    cursor.execute(query)
+    results = cursor.fetchall()
+    connection.close()
+    return results
+
 #function to add a publisher to the database
 def addAPublisher(name, phone, city):
     #create a connection

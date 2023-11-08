@@ -122,6 +122,20 @@ def search_by_price():
         print(item[0], item[1], item[5])
     print('End of search')
 
+def search_by_year():
+    print()
+    year = input("Enter the year of publication of books you want to find: ")
+    try:
+        int(year)
+    except ValueError:
+        print("Year must be an integer")
+        return
+    print("The following are the ISBNs and title of all books published in " + year)
+    results = book_dao.findByYear(year)
+    for item in results:
+        print(item[0], item[1])
+    print("End of search")
+
 def print_menu():
     print()
     print("Please make a selection")
@@ -138,9 +152,6 @@ def print_search_menu():
         print(str(key) + '.', search_menu_options[key], end = ' ')
     print()
     print()
-
-
-
 
 def option1():
     #output instructions for the user
@@ -258,7 +269,9 @@ def option5():
     elif option == 5:
         print("Search Option 5: Search by Price Range was chosen")
         search_by_price()
-    #elif option == 6:
+    elif option == 6:
+        print("Search Option 6: Search by Year was chosen")
+        search_by_year()
     #elif option == 7:
     else:
         print('Invalid option. Please enter a number betwee 1 and 7')
